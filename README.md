@@ -113,8 +113,8 @@ Verify the Hx app on your phone is still working and connected to your thermosta
 
 ## Credits
 
-- Original integration by [@jaredhobbs](https://github.com/jaredhobbs)
-- API endpoint update and dependency fixes by [@dpenney](https://github.com/dpenney)
+- Original integration by [@jaredhobbs](https://github.com/jaredhobbs)  Thank You!
+- API endpoint update and dependency fixes by [@dpenney](https://github.com/dpenney)  Thank you!
 - Vendored dependencies and installation fixes by [@rrsalas](https://github.com/rrsalas)
 
 ---
