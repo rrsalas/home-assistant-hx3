@@ -1,97 +1,124 @@
 # Hx 3 Thermostat
 
-[![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
-[![License][license-shield]](LICENSE)
+[![GitHub Release](https://img.shields.io/github/release/rrsalas/home-assistant-hx3.svg?style=for-the-badge)](https://github.com/rrsalas/home-assistant-hx3/releases)
+[![License](https://img.shields.io/github/license/rrsalas/home-assistant-hx3.svg?style=for-the-badge)](LICENSE)
+[![hacs](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
-[![hacs][hacsbadge]][hacs]
-![Project Maintenance][maintenance-shield]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
+A Home Assistant custom integration for [Johnson Controls Hx 3 thermostats](https://devauthor.jci.com/residential-equipment/residential-thermostats/hx3_touch_screen_thermostat_ds).
 
-[![Community Forum][forum-shield]][forum]
+![Hx 3 Thermostat](hx3.png)
 
-_Component to integrate with [Hx 3 thermostats][hx3]._
+---
 
-![example][exampleimg]
+## Important Notes
 
-## Important Update - API Endpoint Change
+- This is a fork of [jaredhobbs/home-assistant-hx3](https://github.com/jaredhobbs/home-assistant-hx3) with the following fixes:
+  - All required Python dependencies (`gql`, `graphql-core`, etc.) are now **vendored inside the integration** so Home Assistant does not need to install them externally.
+  - Updated API endpoint from `hx.kraftful.cloud` to `hx-thermostat.herokuapp.com`.
+- The share code from the Hx app is **only valid for 7 days**. If setup fails, generate a new one.
 
-**Note:** As of the latest version, this integration now uses a vendored version of the `hx3` library with an updated API endpoint.
+---
 
-### What Changed
+## Prerequisites
 
-The Hx thermostat cloud API endpoint has changed from `hx.kraftful.cloud` to `hx-thermostat.herokuapp.com`. This integration has been updated to:
+Before installing, make sure you have the **Hx mobile app** installed and your thermostat is already set up and working in the app.
 
-- **Vendor the hx3 library locally** - The `hx3` Python library (v0.1.6) is now included directly in this integration at `custom_components/hx3/hx3_api/`
-- **Update the API endpoint** - All API calls now use `https://hx-thermostat.herokuapp.com`
-- **Fix authentication issues** - Disabled automatic GraphQL schema fetching to prevent authentication errors during initialization
+---
 
-### Why This Matters
+## Step 1 — Get Your Share Code
 
-If you were experiencing DNS resolution errors or connection failures with the old `hx.kraftful.cloud` endpoint, this update resolves those issues. The integration will now connect reliably to the current Hx thermostat API.
+You will need an email address and a share code from the Hx mobile app.
 
-## Installation
+**iOS:** Open the Hx app → Settings → Multiple Users → tap **Share Code**
 
-1. Using your tool of choice, open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
-2. If you do not have a `custom_components` directory (folder) there, you need to create it.
-3. In the `custom_components` directory (folder) create a new folder called `hx3`.
-4. Download _all_ the files from the `custom_components/hx3/` directory (folder) in this repository.
-5. Place the files you downloaded in the new directory (folder) you created.
-6. Restart Home Assistant
-7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "Hx 3 Thermostat"
+**Android:** Open the Hx app → Settings → Manage Account → Share Account → tap **Share Code**
 
-## Create new user token
+The app will generate a message containing a link like this:
 
-Before you can use this integration, you'll need to have already setup the
-Hx mobile app. Open the mobile app and navigate to... 
-iOS: Settings->Multiple users.
-Android: Settings->Manage account->Share account
-
-Click the "Share code" button and copy the message that the app generates. It
-should look something like this:
-
-```text
-I'm using the Hx Thermostat app to control our thermostat.
-Once you’ve downloaded the app, you can tap this link to share my account:
-https://hx.kraftful.app/signIn/<email address>/<token>
-
-Or you can use my email to sign in:
-<email address>
-
-And enter this code when prompted:
-<token>
-
-This code will only work for a week. Let me know if you want me to send a new one.
+```
+https://hx.kraftful.app/signIn/<your-email>/<your-token>
 ```
 
-Make note of the `<email address>` and `<token>` from the text.
+Note down your **email address** and the **token** (the long string at the end of the URL). You will need both during setup.
 
-## Configuration is done in the UI
+---
 
-1. Email: enter the email from `<email address>` above
-2. Token: enter the token from `<token>` above
-3. Access token: leave this field blank
-4. Refresh token: leave this field blank
-5. TTL: leave this field as 0
-6. Last refresh: leave this field as 0
+## Step 2 — Install via HACS
 
-## Contributions are welcome!
+1. In Home Assistant, open **HACS → Integrations**
+2. Click the **⋮ menu** (top right) → **Custom Repositories**
+3. Enter the repository URL:
+   ```
+   https://github.com/rrsalas/home-assistant-hx3
+   ```
+   and select **Integration** as the category
+4. Click **Add**
+5. Find **Hx 3 Thermostat** in the list and click **Download**
+6. **Restart Home Assistant** when prompted
 
-If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
+---
 
-***
+## Step 3 — Configure the Integration
 
-[hx3]: https://devauthor.jci.com/residential-equipment/residential-thermostats/hx3_touch_screen_thermostat_ds
-[buymecoffee]: https://www.buymeacoffee.com/jaredhobbs
-[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-components/blueprint.svg?style=for-the-badge
-[commits]: https://github.com/jaredhobbs/home-assistant-hx3/commits/master
-[hacs]: https://github.com/custom-components/hacs
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
-[exampleimg]: hx3.png
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
-[forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Jared%20Hobbs%20%40jaredhobbs-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-components/blueprint.svg?style=for-the-badge
-[releases]: https://github.com/jaredhobbs/home-assistant-hx3/releases
+> ⚠️ This step is required and easy to miss — the integration will not work without it.
+
+1. Go to **Settings → Devices & Services**
+2. Click **+ Add Integration** (bottom right)
+3. Search for **Hx 3 Thermostat** and select it
+4. Enter your credentials:
+   - **Email:** your email address from the share link
+   - **Hx code:** the token from the share link
+5. Click **Submit**
+
+Your thermostat will appear as a climate entity in Home Assistant.
+
+---
+
+## Manual Installation (without HACS)
+
+1. Download or clone this repository
+2. Copy the `custom_components/hx3` folder into your HA config directory at `/config/custom_components/hx3`
+3. Restart Home Assistant
+4. Follow Step 3 above to configure
+
+---
+
+## Supported Features
+
+- Current temperature and humidity
+- Target temperature (heat, cool, heat/cool modes)
+- HVAC mode control (off, heat, cool, heat/cool)
+- Fan mode control (auto, on)
+- Away/preset mode
+- Outdoor temperature display
+- Auxiliary heat (if supported by your unit)
+
+---
+
+## Troubleshooting
+
+**Integration doesn't appear after install**
+Make sure you restarted Home Assistant after installing. Then go to Settings → Devices & Services → + Add Integration and search for "Hx 3 Thermostat".
+
+**Authentication fails**
+Your share code may have expired — it is only valid for 7 days. Generate a new one from the Hx app and try again.
+
+**Thermostat shows no entities**
+Delete the integration from Settings → Devices & Services and re-add it following Step 3 above. Make sure you are entering fresh credentials.
+
+**Connection errors**
+Verify the Hx app on your phone is still working and connected to your thermostat. If the app works but HA doesn't, check your Home Assistant logs at Settings → System → Logs for `hx3` errors.
+
+---
+
+## Credits
+
+- Original integration by [@jaredhobbs](https://github.com/jaredhobbs)
+- API endpoint update and dependency fixes by [@dpenney](https://github.com/dpenney)
+- Vendored dependencies and installation fixes by [@rrsalas](https://github.com/rrsalas)
+
+---
+
+## Contributions Welcome
+
+If you find a bug or want to improve this integration, please open an issue or pull request at [github.com/rrsalas/home-assistant-hx3](https://github.com/rrsalas/home-assistant-hx3).
