@@ -95,6 +95,39 @@ Your thermostat will appear as a climate entity in Home Assistant.
 
 ---
 
+## Tips for US Users
+
+### Set Temperature to Fahrenheit
+If your temperatures are showing in Celsius, your HA unit system needs to be set to US customary. Add or update this in your `configuration.yaml`:
+
+```yaml
+homeassistant:
+  unit_system: us_customary
+```
+
+If you see a message in Settings → System → General saying you cannot change units in the UI, this is why — it must be set in `configuration.yaml`.
+
+### Outdoor Temperature & Humidity Sensors
+The integration exposes outdoor temperature and humidity as **attributes** on the climate entity, not as standalone sensors. To use them on dashboards or in automations, add template sensors to your `configuration.yaml`:
+
+```yaml
+template:
+  - sensor:
+      - name: "First Floor Outdoor Temperature"
+        unit_of_measurement: "°F"
+        state: "{{ state_attr('climate.first_floor', 'outdoor_temperature') }}"
+        device_class: temperature
+
+      - name: "First Floor Humidity"
+        unit_of_measurement: "%"
+        state: "{{ (state_attr('climate.first_floor', 'current_humidity') * 100) | round(0) }}"
+        device_class: humidity
+```
+
+> ⚠️ Note the `* 100` in the humidity template — the API returns humidity as a decimal (e.g. `0.51`) so it must be multiplied to get the correct percentage (`51%`). Repeat for each thermostat, replacing `climate.first_floor` with your entity ID.
+
+---
+
 ## Troubleshooting
 
 **Integration doesn't appear after install**
@@ -113,8 +146,8 @@ Verify the Hx app on your phone is still working and connected to your thermosta
 
 ## Credits
 
-- Original integration by [@jaredhobbs](https://github.com/jaredhobbs)  Thank You!
-- API endpoint update and dependency fixes by [@dpenney](https://github.com/dpenney)  Thank you!
+- Original integration by [@jaredhobbs](https://github.com/jaredhobbs)
+- API endpoint update and dependency fixes by [@dpenney](https://github.com/dpenney)
 - Vendored dependencies and installation fixes by [@rrsalas](https://github.com/rrsalas)
 
 ---
