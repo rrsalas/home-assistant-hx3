@@ -293,7 +293,10 @@ class Controller:
     @property
     def current_humidity(self):
         """The current measured ambient humidity"""
-        return self._data["humidity"]
+        humidity = self._data["humidity"]
+        if humidity is not None and humidity <= 1:
+            return round(humidity * 100)
+        return humidity
 
     @property
     def outdoor_temperature(self):
